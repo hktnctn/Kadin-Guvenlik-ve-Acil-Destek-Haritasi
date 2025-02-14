@@ -1,4 +1,9 @@
-<a href="https://ibb.co/Zb32qTp"><img src="https://i.ibb.co/Zb32qTp/SECURITY-FOR-WOMEN.png" alt="SECURITY-FOR-WOMEN" border="0"></a>
+<p align="center">
+  <a href="https://ibb.co/Zb32qTp">
+    <img src="https://i.ibb.co/Zb32qTp/SECURITY-FOR-WOMEN.png" alt="SECURITY-FOR-WOMEN" border="0">
+  </a>
+</p>
+
 
 # Kadın Güvenlik ve Acil Destek Haritası
 
