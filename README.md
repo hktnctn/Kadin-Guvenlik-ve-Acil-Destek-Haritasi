@@ -4,8 +4,9 @@
   </a>
 </p>
 
-
-# Kadın Güvenlik ve Acil Destek Haritası
+<h1 align="center" style="color:#d63384; font-family:Arial, sans-serif;">
+  Kadın Güvenlik ve Acil Destek Haritası
+</h1>
 
    "Kadın Güvenlik ve Acil Destek Haritası", kadınların günlük yaşamlarında karşılaşabileceği güvenlik risklerine karşı bilinçlenmelerine ve gerektiğinde hızlıca destek alabilmelerine olanak tanımayı amaçlayan bir harita uygulamasıdır. Bu proje, kadınların güvende hissetmeleri için güvenlik ve acil destek noktalarını harita üzerinde gösterir, aynı zamanda çevrelerindeki tehlikeler hakkında bilgilendirmelerde bulunur.
 
