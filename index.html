@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İstanbul Kadın Acil Destek Haritası</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    
+    <style>
+        /* Body ve HTML tam ekran kaplaması için */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Kaydırmayı engelle */
+        }
+
+        /* Harita konteyneri tam ekran kaplaması için */
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Başlık ve butonlar için stil */
+        h1 {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .buttons {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons button {
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #0078A8;
+            color: white;
+        }
+
+        .buttons button:hover {
+            background: #005f87;
+        }
+
+        .top-right-image {
+            position: fixed;
+            bottom: 20px;  /* Alt taraftan 20px uzaklık */
+            right: 20px;   /* Sağ taraftan 20px uzaklık */
+            width: 150px;  /* Görselin genişliği */
+            height: auto;  /* Yüksekliği otomatik olarak ayarla */
+            z-index: 1000;  /* Diğer öğelerin önünde yer alması için */
+        }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+</head>
+<body>
+    <img src="SECURITY FOR WOMEN.jpg" alt="Acil Destek" class="top-right-image">
+    <h1>İstanbul Kadın Acil Destek Haritası</h1>
+    <div class="buttons">
+        <button onclick="showLocations('hospital')">Hastaneler</button>
+        <button onclick="showLocations('police')">Polis Karakolları</button>
+        <button onclick="showLocations('shelter')">Kadın Sığınma Evleri</button>
+    </div>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([41.0082, 28.9784], 10);
+
+        // Basemap seçenekleri
+        var basemaps = {
+            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }),
+            "CartoDB Voyager": L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            }),
+            "CartoDB Dark Matter": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            }),
+            "ESRI World Imagery": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '&copy; <a href="https://www.esri.com/">ESRI</a>'
+            })
+        };
+
+        // Varsayılan basemap
+        basemaps["OpenStreetMap"].addTo(map);
+
+        // Basemap kontrol paneli ekle
+        L.control.layers(basemaps).addTo(map);
+
+        var markers = [];
+        var userMarker;
+        var routingControl;
+
+        var icons = {
+            hospital: L.icon({ iconUrl: 'hospital.png', iconSize: [30, 30] }),
+            police: L.icon({ iconUrl: 'polis.png', iconSize: [30, 30] }),
+            shelter: L.icon({ iconUrl: 'ev.png', iconSize: [30, 30] })
+        };
+
+        var locations = {
+            hospital: [
+            { name: "SBÜ Eğitim Araştırma Hastanesi", coords: [41.031443, 28.870410] },
+    { name: "Medlife Bağcılar Hastanesi", coords: [41.049893, 28.859166] },
+    { name: "Bağcılar Şafak Hastanesi", coords: [41.049372, 28.844690] },
+    { name: "Atlas Üniversitesi Hastanesi", coords: [41.031440, 28.838596] },
+    { name: "Bağcılar Eğitim ve Araştırma Hastanesi", coords: [41.032449, 28.873922] },
+    { name: "Medipol Üniversite Hastanesi", coords: [41.032449, 28.873922] },
+    { name: "Erdem Hastanesi", coords: [41.032449, 28.873922] },
+    { name: "Esenyurt Devlet Hastanesi", coords: [41.036014, 28.666784] },
+    { name: "Esencan Hastanesi", coords: [41.038603, 28.676740] },
+    { name: "İstinye Üniversite Hastanesi", coords: [41.060870, 28.670904] },
+    { name: "Eslife Hastanesi", coords: [41.045854, 28.648931] },
+    { name: "Doğa Hastanesi", coords: [41.015293, 28.698026] },
+    { name: "Özel Fatih Hastanesi", coords: [41.018572, 28.950144] },
+    { name: "Haseki Eğitim ve Araştırma Hastanesi", coords: [41.025565, 28.945338] },
+    { name: "Sağlık Bakanlığı İstanbul Eğitim ve Araştırma Hastanesi", coords: [41.006386, 28.936869] },
+    { name: "Gebze Fatih Hastanesi", coords: [40.795466, 29.419388] },
+    { name: "SBÜ Fatih Eğitim ve Araştırma Hastanesi", coords: [40.976907, 29.101942] },
+    { name: "Bezmialem Vakıf Üniversitesi Hastanesi", coords: [41.023131, 28.937327] },
+    { name: "Cerrahpaşa Tıp Fakültesi Hastanesi", coords: [41.011215, 28.939730] },
+    { name: "Medipol Bahçelievler Hastanesi", coords: [41.001509, 28.828776] },
+    { name: "Koç Üniversitesi Hastanesi", coords: [41.028450, 28.916324] },
+    { name: "İstanbul Üniversitesi Tıp Fakültesi", coords: [41.023270, 28.933490] },
+    { name: "Özel Küçükçekmece Hastanesi", coords: [41.003631, 28.782507] },
+    { name: "Medipol Üniversitesi Sefaköy Hastanesi", coords: [41.017253, 28.798131] },
+    { name: "Özel Halkalı Kent Hastanesi", coords: [41.038361, 28.794869] },
+    { name: "Acıbadem Mehmet Ali Aydınlar Üniversitesi Atakent Hastanesi", coords: [41.037844, 28.778561] },
+    { name: "Biruni Üniversitesi Tıp Fakültesi Hastanesi", coords: [41.000543, 28.794697] },
+    { name: "Medicana Avcılar Hastanesi", coords: [40.984923, 28.720888] },
+    { name: "Florya Hastanesi", coords: [40.982850, 28.746980] },
+    { name: "Avcılar Murat Kölük Devlet Hastanesi", coords: [40.986090, 28.732046] },
+    { name: "Özel Avcılar Anadolu Hastanesi", coords: [41.007079, 28.705953] },
+    { name: "Üsküdar Devlet Hastanesi", coords: [41.016103, 29.038753] },
+    { name: "Başkent Üniversitesi İstanbul Hastanesi", coords: [41.025567, 29.040854] },
+    { name: "Özel Üsküdar Anadolu Hastanesi", coords: [41.022155, 29.015929] },
+    { name: "Erdem Hastanesi", coords: [41.024076, 29.078481] },
+    { name: "Özel Medvia Hastanesi", coords: [41.052841, 29.076301] },
+    { name: "Medicana Çamlıca Hastanesi", coords: [41.025072, 29.084066] },
+    { name: "Sultanbeyli Devlet Hastanesi", coords: [40.987154, 29.283830] },
+    { name: "Saygı Hastanesi", coords: [40.970825, 29.257995] },
+    { name: "Ersoy Hastanesi", coords: [40.967519, 29.269411] },
+    { name: "Özel İstanbul Bölge Hastanesi", coords: [40.967519, 29.269411] },
+    { name: "Çatalca İlyas Çokay Devlet Hastanesi", coords: [41.141482, 28.466581] },
+    { name: "Büyükçekmece Kolan Hospital", coords: [41.030129, 28.586949] },
+    { name: "Hadımköy Dr. İsmail Niyazi Kurtulmuş Hastanesi", coords: [41.159746, 28.622332] },
+    { name: "İstanbul Beykoz Devlet Hastanesi", coords: [41.119652, 29.097938] },
+    { name: "Özel Beykoz Tıp Merkezi", coords: [41.141761, 29.086265] },
+    { name: "Medistate Kavacık Hastanesi", coords: [41.097405, 29.101714] },
+    { name: "FSM Tıp Merkezi", coords: [41.095827, 29.090695] },
+    { name: "Çekmeköy Devlet Hastanesi", coords: [41.038818, 29.232578] },
+    { name: "Çekmeköy Tıp Merkezi", coords: [41.026646, 29.192066] }
+
+            ],
+            police: [
+                
+{ name: "Bağcılar İlçe Emniyet Müdürlüğü", coords: [41.0082, 28.9209] },
+    { name: "Şehit Cemal Şenel Polis Merkezi Amirliği", coords: [41.0351, 28.8567] },
+    { name: "Güneşli Polis Merkezi", coords: [41.0336, 28.8292] },
+    { name: "Bağcılar Polis Merkezi", coords: [41.0390, 28.8725] },
+    { name: "100. Yıl Kemalpaşa Polis Merkezi", coords: [41.0425, 28.8763] },
+    { name: "Kıraç Polis Merkezi Amirliği", coords: [41.0345, 28.6256] },
+    { name: "Esenkent Gazi Turgut Aslan Polis Merkezi Amirliği", coords: [41.0592, 28.6781] },
+    { name: "Esenyurt Polis Merkezi Amirliği", coords: [41.0340, 28.6750] },
+    { name: "Yunus Emre Şehit Kenan Kumaş Polis Merkezi Amirliği", coords: [41.0475, 28.6708] },
+    { name: "Mevlana Polis Merkezi", coords: [41.0450, 28.6650] },
+    { name: "Osmangazi Şehit Ersoy Karacaoğlan Polis Merkezi", coords: [41.0530, 28.6500] },
+    { name: "Aksaray Şehit Vedat Ulusoy Polis Merkezi", coords: [41.0085, 28.9550] },
+    { name: "Şehit Tevfik Fikret Erciyas Polis Merkezi", coords: [41.0250, 28.9390] },
+    { name: "Balat Şehit Zafer Mat Polis Merkezi Amirliği", coords: [41.0320, 28.9480] },
+    { name: "Şehremini Polis Merkezi", coords: [41.0170, 28.9390] },
+    { name: "Beyazıt Polis Merkezi", coords: [41.0100, 28.9630] },
+    { name: "Sirkeci Polis Merkezi", coords: [41.0130, 28.9780] },
+    { name: "Kocamustafapaşa Şehit Sinan Acar Polis Merkezi Amirliği", coords: [41.0000, 28.9400] },
+    { name: "Küçükçekmece Polis Merkezi Amirliği", coords: [41.0027, 28.7942] },
+    { name: "Sefaköy Polis Merkezi Amirliği", coords: [41.0071, 28.7979] },
+    { name: "Kanarya Polis Merkezi Amirliği", coords: [40.9956, 28.7833] },
+    { name: "Halkalı Şehit Ahmet Zehir Polis Merkezi Amirliği", coords: [41.0349, 28.7994] },
+    { name: "İkitelli Şehit Zeki Kaya Polis Merkezi Amirliği", coords: [41.0678, 28.8106] },
+    { name: "Avcılar Polis Merkezi Amirliği", coords: [40.9781, 28.7226] },
+    { name: "Firuzköy Şehit Ilgız Aykutlu Polis Merkezi Amirliği", coords: [40.9803, 28.6934] },
+    { name: "Tahtakale Şehit Abdülbakir Sirma Polis Merkezi Amirliği", coords: [41.0345, 28.7087] },
+    { name: "Yeşilkent Şehit Adem Başar Polis Merkezi Amirliği", coords: [41.0219, 28.6802] },
+    { name: "Doğancılar Şehit Tuncer Mustafaoğlu Polis Merkezi Amirliği", coords: [41.0186, 29.0136] },
+    { name: "Çengelköy Polis Merkezi Amirliği", coords: [41.0536, 29.0534] },
+    { name: "Bulgurlu Şehit Altuğ Verdi Polis Merkezi Amirliği", coords: [41.0182, 29.1015] },
+    { name: "Turgut Reis Şehit Ömer Kurak Polis Merkezi Amirliği", coords: [40.9647, 29.2615] },
+    { name: "Ahmet Yesevi Polis Merkezi Amirliği", coords: [40.9675, 29.2748] },
+    { name: "Fatih Polis Merkezi Amirliği", coords: [40.9663, 29.2759] },
+    { name: "Şehit Vefa Karakurdu Polis Merkezi Amirliği", coords: [41.0326, 29.1915] },
+    { name: "Alemdağ Polis Merkezi Amirliği", coords: [41.0497, 29.2212] },
+    { name: "Anadolu Kavağı Polis Merkezi", coords: [41.2136, 29.1456] },
+    { name: "Kavacık Polis Merkezi", coords: [41.1293, 29.1241] },
+    { name: "Paşabahçe Polis Merkezi", coords: [41.1478, 29.1036] },
+    { name: "Polonezköy Polis Merkezi", coords: [41.1568, 29.4419] },    
+    { name: "Çavuşbaşı Şehit Üzeyir Kocatürk Polis Merkezi Amirliği", coords: [41.0802, 29.6331] }
+
+
+
+
+
+            ],
+            shelter: [
+            { name: "Kadin Ve Aile Hizmetleri Müdürlüğü Kadin Sosyal Yaşam Merkezi", coords: [41.03486816, 28.67765834] },
+            { name: "Esenyurt Sosyal Hizmet Merkezi Müdürlüğü", coords: [41.02962509, 28.6686412] },
+            { name: "Esenler Dayanışma Evi", coords: [41.03927216, 28.88380963] },
+            { name: "Kadın ve Aile Hizmetleri Müdürlüğü", coords: [41.04704033, 28.87762982] },
+            { name: "Bağcılar Sosyal Hizmet Merkezi", coords: [41.04548677, 28.82441479] },
+            { name: "KADEM Kadın Destek Merkezi", coords: [41.03695026, 28.9355923] },
+            { name: "Vatan Kadın Konaklama Evleri", coords: [41.04460368, 28.78071552] },
+            { name: "KADAV – Kadınlarla Dayanışma Vakfı", coords: [41.01255088, 28.79850015] },
+            { name: "Firuzköy Kadın Sosyal Yaşam Merkezi", coords: [41.0289195, 28.70573086] },
+            { name: "ÜKAD ÜSKÜDAR KADIN VE AİLE DAYANIŞMA MERKEZİ", coords: [41.02310174, 29.0726309] },
+            { name: "Çekmeköy Sosyal Yardımlaşma Ve Dayanışma Vakfı", coords: [41.04371863, 29.16811193] },
+            { name: "Sosyal Yardımlaşma Ve Dayanışma Vakfı", coords: [41.13134654, 29.09959141] }
+            ]
+        };
+
+        var selectedType = null;
+
+        function showLocations(type) {
+            if (routingControl) {
+                map.removeControl(routingControl);
+                routingControl = null;
+            }
+            if (userMarker) {
+                map.removeLayer(userMarker);
+                userMarker = null;
+            }
+
+            selectedType = type;
+            clearMarkers();
+
+            locations[type].forEach(loc => {
+                var marker = L.marker(loc.coords, { icon: icons[type] })
+                    .bindPopup(loc.name)
+                    .addTo(map);
+                markers.push(marker);
+            });
+        }
+
+        function clearMarkers() {
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+        }
+
+        function findNearestLocation(userCoords, type) {
+            var nearest = locations[type].reduce((closest, loc) => {
+                var dist = map.distance(userCoords, loc.coords);
+                return dist < closest.distance ? { location: loc, distance: dist } : closest;
+            }, { location: null, distance: Infinity });
+
+            if (nearest.location) {
+                if (routingControl) {
+                    map.removeControl(routingControl);
+                }
+
+                routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(userCoords[0], userCoords[1]),
+                        L.latLng(nearest.location.coords[0], nearest.location.coords[1])
+                    ],
+                    routeWhileDragging: false,
+                    addWaypoints: false,
+                    draggableWaypoints: false,
+                    fitSelectedRoutes: true,
+                    show: false
+                }).addTo(map);
+
+                document.querySelector('.leaflet-routing-container').style.display = 'none';
+            }
+        }
+
+        map.on('click', function (e) {
+            if (userMarker) {
+                map.removeLayer(userMarker);
+            }
+            userMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map)
+                .bindPopup("Seçilen Konum").openPopup();
+
+            if (selectedType) {
+                findNearestLocation([e.latlng.lat, e.latlng.lng], selectedType);
+            }
+        });
+    </script>
+</body>
+</html>
