@@ -1,5 +1,5 @@
 # Kadın Güvenlik ve Acil Destek Haritası
-
+'Kadınların günlük yaşamlarında karşılaştıkları güvenlik tehditlerini minimize etmek ve acil durumlarda hızlı destek alabilmelerini sağlamak amacıyla bir dijital harita platformu oluşturmak. Bu platform, güvenli rotaları, riskli bölgeleri, acil yardım noktalarını ve kadınlar için özel destek hizmetlerini haritalayarak, kullanıcıların daha güvenli bir şekilde seyahat etmelerini, hareket etmelerini ve tehlike anlarında kolayca yardım alabilmelerini sağlamayı hedefler.'
 
 
 <a href="https://ibb.co/VWLGWKdY"><img src="https://i.ibb.co/ynNCn3DF/Ekran-g-r-nt-s-2025-02-14-013124.jpg" alt="Ekran-g-r-nt-s-2025-02-14-013124" border="0"></a>
