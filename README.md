@@ -14,6 +14,8 @@
 
 <a href="https://ibb.co/KTKQqVV"><img src="https://i.ibb.co/B0n7ZTT/1.jpg" alt="1" border="0"></a>
 
+Haritamızı ilk açtığınızda karşınıza çıkan ekranın görüntüsü bu şekil olmakla beraber geri kalan görsellerimizde Kadın Güvenlik Ve Acil Destek Haritasında yapabileceklerinizi görsellerle anlattık.
+
 <a href="https://ibb.co/mWFXpsY"><img src="https://i.ibb.co/6CJ1Qhp/2.png" alt="2" border="0"></a>
 
 Bu iki görselde, haritamızda kullanılan katmanlar ile haritanın tamamlanmış ve entegre edilmiş nihai halini sunmaktayız. İlk görselde, harita üzerinde yer alan farklı katmanların detaylarını görmek mümkündür. İkinci görsel ise, tüm katmanların bir araya getirilmesiyle oluşturulan nihai harita görünümünü kapsamlı bir şekilde yansıtmaktadır.
