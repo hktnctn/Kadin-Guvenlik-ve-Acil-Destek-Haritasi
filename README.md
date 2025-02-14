@@ -20,7 +20,7 @@ Kullanıcının bulunduğu konuma en yakın Kadın Sığınma Evi'nin tespiti ve
 
 <a href="https://ibb.co/Cpr5DcyN"><img src="https://i.ibb.co/WNTWjhXq/polis.jpg" alt="polis" border="0"></a>
 
-
+Şuan görüntülediğiniz görselde haritamız üzerinde İstanbulda 'Bağcılar,Esenyurt,Fatih,Küçükçekmece,Avcılar,Üsküdar,Sultanbeyli,Çekmeköy,Beykoz,Çatalca' ilçelerindeki Polis Merkezleri en basit halinde gösterilmektedir.
 
 <a href="https://ibb.co/B5HyCQ5Z"><img src="https://i.ibb.co/v6C3jT6P/polisse.jpg" alt="polisse" border="0"></a>
 
