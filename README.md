@@ -32,13 +32,15 @@ Kullanıcının bulunduğu konuma en yakın Kadın Sığınma Evi'nin tespiti ve
 
 <a href="https://ibb.co/B5HyCQ5Z"><img src="https://i.ibb.co/v6C3jT6P/polisse.jpg" alt="polisse" border="0"></a>
 
-
+Kendi konumunuzu harita üzerinde işaretlediğiniz zaman en yakın Polis Merkezleri gösterilirken sizlere en yakın rota çizdirmektedir.
 
 <a href="https://ibb.co/wN56Zcms"><img src="https://i.ibb.co/6RjscXCB/hastane.jpg" alt="hastane" border="0"></a>
 
-
+Gördüğünüz harita üzerinde İstanbulda seçtiğimiz ilçelerde sizere Hastane konumlarını en basit ve anlaşılır şekilde göstermektedir.
 
 <a href="https://ibb.co/CpSNc5Bv"><img src="https://i.ibb.co/xKrPkShG/hastane-se.jpg" alt="hastane-se" border="0"></a>
+
+Burada ise gösterilen Hastane konumları sizin buluduğunuz konuma göre en yakın olacak şekilde işaretlenmiş ve rota oluşturulmuş olarak gösterilmektedir.
 
 
 
