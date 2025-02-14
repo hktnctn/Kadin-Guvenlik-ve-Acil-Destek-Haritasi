@@ -1,3 +1,5 @@
+<a href="https://ibb.co/Zb32qTp"><img src="https://i.ibb.co/Zb32qTp/SECURITY-FOR-WOMEN.png" alt="SECURITY-FOR-WOMEN" border="0"></a>
+
 # Kadın Güvenlik ve Acil Destek Haritası
 
    "Kadın Güvenlik ve Acil Destek Haritası", kadınların günlük yaşamlarında karşılaşabileceği güvenlik risklerine karşı bilinçlenmelerine ve gerektiğinde hızlıca destek alabilmelerine olanak tanımayı amaçlayan bir harita uygulamasıdır. Bu proje, kadınların güvende hissetmeleri için güvenlik ve acil destek noktalarını harita üzerinde gösterir, aynı zamanda çevrelerindeki tehlikeler hakkında bilgilendirmelerde bulunur.
